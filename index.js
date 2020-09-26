@@ -1,5 +1,6 @@
 const inquirer = require('inquirer');
 const fs = require('fs');
+const generateMarkdown = require('./utils/generateMarkdown.js');
 
 // array of questions for user
 const questions = [{
@@ -39,10 +40,15 @@ const questions = [{
         message: 'What is the usage information for your project?'
     },
     {
-        type: 'checkbox',
-        name: 'licneses',
-        message: 'What licenses do your project fall under? (Check all that apply)',
+        type: 'list',
+        name: 'license',
+        message: 'What license does your project fall under?',
         choices: ['MIT', 'Apache', 'BSD', 'ISC']
+    },
+    {
+        type: 'input',
+        name: 'contribution',
+        message: 'Are there any contributions you would like to add?'
     },
     {
         type: 'input',
@@ -64,19 +70,6 @@ const questions = [{
     },
     {
         type: 'input',
-        name: 'link',
-        message: 'Enter the GitHub link for your project. (Required)',
-        validate: linkInput => {
-            if (linkInput) {
-                return true;
-            } else {
-                console.log('Please enter a link!');
-                return false;
-            }
-        }
-    },
-    {
-        type: 'input',
         name: 'email',
         message: 'Enter your email address. (Required)',
         validate: emailInput => {
@@ -91,14 +84,19 @@ const questions = [{
 ];
 
 // function to write README file
-function writeToFile(fileName, data) {
+function writeToFile(data) {
+    fs.writeFile('README.md', data, err => {
+        if (err) throw err;
 
-}
+        console.log('Read Me complete! Open README.md to see the output!');
+    });
+};
 
 // function to initialize program
 function init() {
     inquirer.prompt(questions)
-        .then(data => console.log(data));
+        .then(generateMarkdown)
+        .then(writeToFile);
 };
 
 // function call to initialize program
