@@ -48,7 +48,7 @@ const questions = [{
     {
         type: 'input',
         name: 'contribution',
-        message: 'Are there any contributions you would like to add?'
+        message: 'How can others contribute to your project?'
     },
     {
         type: 'input',
